@@ -42,7 +42,7 @@ class ContactController extends Controller
 
         $validator = Validator::make($data, [
             'name'      => 'required|min:5',
-            'contact'   => 'required|min:9|max:9',
+            'contact'   => 'required|min:9|max:9|unique:contacts,contact',
             'email'     => 'required|unique:contacts,email|email:rfc,dns',
         ]);
 
@@ -93,7 +93,7 @@ class ContactController extends Controller
 
         $validator = Validator::make($data, [
             'name'      => 'required|min:5',
-            'contact'   => 'required|min:9|max:9',
+            'contact'   => 'required|min:9|max:9|unique:contacts,contact'.$id,
             'email'     => 'required|email:rfc,dns|unique:contacts,email,'.$id,
         ]);
 
