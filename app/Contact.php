@@ -22,6 +22,6 @@ class Contact extends Model
     /**
      * Hidden timestamps
      */
-    protected $hidden = ["created_at", "updated_at"];
+    protected $hidden = ["created_at", "updated_at", "deleted_at"];
 
 }

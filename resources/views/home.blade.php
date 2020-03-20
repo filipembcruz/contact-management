@@ -1,23 +1,22 @@
 @extends('layouts.app')
 
+
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+<v-container fluid>
+    <v-row align="center" justify="center">
+        <v-col cols="12" md="8">
 
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        <!-- messages -->
+        @if (isset($message))
+            <v-alert dismissible type="success" border="left" elevation="2">
+                {{ $message }}
+            </v-alert>
+        @endif
+
+        <data-tables title="Contacts" :collection="{{ json_encode($collection) }}" url="{{ route('contacts.index')  }}" token="{{ csrf_token() }}" guest="{{ Auth::guest() }}" />
+        </v-col>
+    </v-row>
+</v-container>
+
 @endsection

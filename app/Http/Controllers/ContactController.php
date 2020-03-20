@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use Illuminate\Http\Request;
-use Egulias\EmailValidator\EmailValidator;
-use Egulias\EmailValidator\Validation\RFCValidation;
+use Validator;
 
 class ContactController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +17,7 @@ class ContactController extends Controller
     public function index()
     {
         $collection = Contact::all();
-        return compact('collection');
+        return view('home', compact('collection'));
     }
 
     /**
@@ -27,7 +27,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        return view('template.create');
     }
 
     /**
@@ -42,21 +42,18 @@ class ContactController extends Controller
 
         $validator = Validator::make($data, [
             'name'      => 'required|min:5',
-            'email'     => 'required|unique:contacts,email|email:rfc,dns|',
-            'contact'   => 'required|digits:9'
+            'contact'   => 'required|min:9|max:9',
+            'email'     => 'required|unique:contacts,email|email:rfc,dns',
         ]);
-
-        // Email advanced validator
-        // $validator = new EmailValidator();
-        // $validator->isValid("example@example.com", new RFCValidation());
 
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput();     
         }
 
-        $collection = Contact::create($collection);
+        $collection = Contact::create($data);
+        $message = 'Contact created!';
 
-        return compact('collection');
+        return view('template.edit', compact('collection', 'message'));
     }
 
     /**
@@ -68,18 +65,19 @@ class ContactController extends Controller
     public function show($id)
     {
         $collection = Contact::findOrFail($id);
-        return compact('collection');
+        return view('template.show', compact('collection'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Contact  $contact
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact)
+    public function edit($id)
     {
-        //
+        $collection = Contact::findOrFail($id);
+        return view('template.edit', compact('collection'));
     }
 
     /**
@@ -95,22 +93,20 @@ class ContactController extends Controller
 
         $validator = Validator::make($data, [
             'name'      => 'required|min:5',
-            'email'     => 'required|unique:contacts,email|email:rfc,dns|',
-            'contact'   => 'required|digits:9'
+            'contact'   => 'required|min:9|max:9',
+            'email'     => 'required|email:rfc,dns|unique:contacts,email,'.$id,
         ]);
-
-        // Email advanced validator
-        // $validator = new EmailValidator();
-        // $validator->isValid("example@example.com", new RFCValidation());
 
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput();     
         }
 
-        $contact = Contact::find($id);
-        $contact->update($data);
+        $collection = Contact::find($id);
+        $collection->update($data);
 
-        return compact('contact');
+        $message = 'Contact updated!';
+
+        return view('template.edit', compact('collection', 'message'));
     }
 
     /**
@@ -122,6 +118,7 @@ class ContactController extends Controller
     public function destroy($id)
     {
         $contact = Contact::find($id);
-        return $contact->delete();
+        $contact->delete();
+        
     }
 }

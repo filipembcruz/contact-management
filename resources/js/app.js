@@ -28,7 +28,11 @@ Vue.use(VueTheMask);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('main-menu', require('./components/Menu.vue').default);
+Vue.component('data-tables', require('./components/DataTables.vue').default);
+Vue.component('dialog', require('./components/Dialog.vue').default);
+Vue.component('custom-field', require('./components/CustomField.vue').default);
+Vue.component('form-header', require('./components/FormHeader.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -39,4 +43,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify(),
+    VueTheMask,
 });

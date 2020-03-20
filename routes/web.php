@@ -11,10 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/', 'ContactController@index')->name('home');
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('contacts', 'ContactController');
+//Route::get('/home', 'HomeController@index')->name('home');
